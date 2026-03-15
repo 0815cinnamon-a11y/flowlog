@@ -1250,3 +1250,101 @@ body.drag-active {
     border-radius: 18px;
   }
 }
+@media (max-width: 720px) {
+  .main-content {
+    padding: 12px;
+  }
+
+  .hero,
+  .stats-grid,
+  .toolbar,
+  .template-section,
+  .board-section,
+  .gantt-section,
+  .table-section {
+    margin-bottom: 14px;
+  }
+
+  .board-section {
+    padding: 14px 12px;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .column {
+    border-radius: 16px;
+  }
+
+  .column-head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+  }
+
+  .column-head p {
+    display: none;
+  }
+
+  .column-body {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .issue-card {
+    padding: 12px;
+  }
+
+  .issue-card-head {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .issue-card h4 {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .issue-description {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .issue-meta-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .issue-actions {
+    gap: 10px;
+  }
+
+  .link-button {
+    min-height: 38px;
+    font-size: 13px;
+  }
+
+  .status-actions {
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .status-button {
+    min-height: 40px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .status-button::after {
+    inset: auto 12px 7px;
+  }
+
+  .gantt-section,
+  .table-section {
+    padding: 14px 12px;
+ 
