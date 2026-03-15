@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2e6fd8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>Flowlog | 進捗管理ツール</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="manifest" href="./manifest.json" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">F</div>
+          <div>
+            <p class="eyebrow">Creative Project Tracker</p>
+            <h1>Flowlog</h1>
+          </div>
+        </div>
+
+        <section class="sidebar-panel sidebar-overview">
+          <p class="overview-label">Workspace</p>
+          <strong>制作進行を一箇所に</strong>
+          <p class="overview-copy">納期が危ない課題も、いま動いている案件も一目で追えるダッシュボードです。</p>
+        </section>
+
+        <section class="sidebar-panel">
+          <div class="panel-head">
+            <h2>プロジェクト</h2>
+            <button id="addProjectButton" class="ghost-button" type="button">+</button>
+          </div>
+          <div id="projectList" class="project-list"></div>
+        </section>
+
+        <section class="sidebar-panel compact">
+          <h2>チーム</h2>
+          <div id="memberList" class="member-list"></div>
+        </section>
+      </aside>
+
+      <main class="main-content">
+        <header class="hero">
+          <div class="hero-copy-wrap">
+            <p class="eyebrow">Backlog like workspace</p>
+            <h2 id="currentProjectName">全プロジェクト</h2>
+            <p id="projectSummary" class="hero-copy"></p>
+          </div>
+          <div class="hero-actions">
+            <span id="syncStatus" class="sync-pill local">ローカル保存</span>
+            <button id="addIssueButton" class="primary-button" type="button">課題を追加</button>
+          </div>
+          <div class="hero-orb hero-orb-1"></div>
+          <div class="hero-orb hero-orb-2"></div>
+        </header>
+
+        <section class="stats-grid" id="statsGrid"></section>
+
+        <section class="toolbar toolbar-extended">
+          <label class="search">
+            <span>検索</span>
+            <input id="searchInput" type="search" placeholder="課題名・担当者・説明で検索" />
+          </label>
+
+          <label>
+            <span>状態</span>
+            <select id="statusFilter"></select>
+          </label>
+
+          <label>
+            <span>担当者</span>
+            <select id="assigneeFilter"></select>
+          </label>
+
+          <label>
+            <span>期限</span>
+            <select id="dueFilter"></select>
+          </label>
+
+          <label>
+            <span>並び替え</span>
+            <select id="sortFilter"></select>
+          </label>
+        </section>
+
+        <section class="template-section">
+          <div class="section-head">
+            <div>
+              <h3>テンプレート課題</h3>
+              <p class="section-copy">よく使う作業をワンクリックで追加できます。</p>
+            </div>
+          </div>
+          <div id="templateList" class="template-list"></div>
+        </section>
+
+        <section class="board-section">
+          <div class="section-head">
+            <h3>進捗ボード</h3>
+            <p id="issueCountLabel"></p>
+          </div>
+          <div id="board" class="board"></div>
+        </section>
+
+        <section class="gantt-section">
+          <div class="section-head">
+            <div>
+              <h3>ガントチャート</h3>
+              <p id="ganttSummary" class="section-copy"></p>
+            </div>
+          </div>
+          <div class="gantt-wrap">
+            <div id="ganttChart" class="gantt-chart"></div>
+          </div>
+        </section>
+
+        <section class="table-section">
+          <div class="section-head">
+            <h3>課題一覧</h3>
+            <button id="resetButton" class="ghost-button" type="button">初期データに戻す</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>キー</th>
+                  <th>課題</th>
+                  <th>担当者</th>
+                  <th>期限</th>
+                  <th>状態</th>
+                </tr>
+              </thead>
+              <tbody id="issueTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="issueDialog" class="modal">
+      <form id="issueForm" method="dialog" class="modal-card">
+        <div class="modal-head">
+          <h3 id="issueDialogTitle">課題を追加</h3>
+          <button class="icon-button" type="button" data-close-dialog>&times;</button>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>課題名</span>
+            <input name="title" required maxlength="80" />
+          </label>
+          <label>
+            <span>プロジェクト</span>
+            <select name="projectId" required></select>
+          </label>
+          <label>
+            <span>担当者</span>
+            <select name="assignee" required></select>
+          </label>
+          <label>
+            <span>状態</span>
+            <select name="status" required></select>
+          </label>
+          <label>
+            <span>開始日</span>
+            <input name="startDate" type="date" />
+          </label>
+          <label>
+            <span>期限</span>
+            <input name="dueDate" type="date" required />
+          </label>
+          <label class="wide">
+            <span>繰り返し</span>
+            <select name="recurrence"></select>
+          </label>
+          <label class="wide">
+            <span>説明</span>
+            <textarea name="description" rows="4" maxlength="300"></textarea>
+          </label>
+        </div>
+        <div class="modal-actions modal-actions-split">
+          <button id="deleteIssueButton" class="danger-button" type="button" hidden>削除する</button>
+          <div class="modal-actions-right">
+            <button class="ghost-button" type="button" data-close-dialog>キャンセル</button>
+            <button class="primary-button" type="submit">保存する</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="projectDialog" class="modal">
+      <form id="projectForm" method="dialog" class="modal-card small">
+        <div class="modal-head">
+          <h3>プロジェクトを追加</h3>
+          <button class="icon-button" type="button" data-close-dialog>&times;</button>
+        </div>
+        <div class="form-grid single">
+          <label>
+            <span>プロジェクト名</span>
+            <input name="name" required maxlength="40" />
+          </label>
+          <label>
+            <span>概要</span>
+            <textarea name="description" rows="4" maxlength="180"></textarea>
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button class="ghost-button" type="button" data-close-dialog>キャンセル</button>
+          <button class="primary-button" type="submit">追加する</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./firebase-config.js"></script>
+    <script src="./sync.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
+
+
+
+
+
