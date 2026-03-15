@@ -1,4 +1,4 @@
-const CACHE_NAME = "flowlog-shell-v2";
+const CACHE_NAME = "flowlog-shell-v3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -24,7 +24,8 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   const url = new URL(event.request.url);
-  const isLiveFile = ["/firebase-config.js", "/sync.js", "/app.js", "/index.html"].some((path) => url.pathname.endsWith(path));
+　const isLiveFile = ["/firebase-config.js", "/sync.js", "/app.js", "/index.html", "/styles.css"].some((path) => url.pathname.endsWith(path));
+
 
   if (isLiveFile) {
     event.respondWith(
