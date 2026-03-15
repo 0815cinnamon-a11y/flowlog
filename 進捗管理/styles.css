@@ -1347,4 +1347,11 @@ body.drag-active {
   .gantt-section,
   .table-section {
     padding: 14px 12px;
- 
+   }
+
+  .gantt-wrap,
+  .table-wrap {
+    border-radius: 14px;
+  }
+}
+
